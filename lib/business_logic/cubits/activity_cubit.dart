@@ -1,18 +1,19 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:first_app/data/repositories/activity_repository.dart';
-import '../../../data/models/activity.dart';
 import 'package:http/http.dart' as http;
+
+import '../../data/repositories/i_activity_repository.dart';
+import '../../../data/models/activity.dart';
 
 part 'activity_state.dart';
 
 class ActivityCubit extends Cubit<ActivityState> {
-  late final ActivityRepository _repository;
+  late final IActivityRepository _repository;
 
-  ActivityCubit({required ActivityRepository activityRepository})
+  ActivityCubit({required IActivityRepository activityRepository})
       : _repository = activityRepository,
-        super(ActivityInitial());
+        super(ActivityInitial(initState: "Tap a button to get an activity"));
 
   void getNextButtonTapped() async {
     try {

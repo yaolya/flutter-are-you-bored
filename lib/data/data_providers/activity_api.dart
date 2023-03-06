@@ -10,8 +10,4 @@ class ActivityAPI {
       throw Exception('Failed to load album');
     }
   }
-
-  // Future<List<dynamic>> fetchActivities() async {
-  //   return [];
-  // }
 }

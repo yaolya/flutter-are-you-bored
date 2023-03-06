@@ -36,28 +36,35 @@ class _HomeScreenState extends State<_HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Stack(
-                    children: <Widget>[
-                      Text(
-                        "Tap a button to get an activity",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 40,
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 6
-                            ..color = Colors.blue[700]!,
-                        ),
-                      ),
-                      Text(
-                        "Tap a button to get an activity",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 40,
-                          color: Colors.grey[300],
-                        ),
-                      ),
-                    ],
+                  BlocBuilder<ActivityCubit, ActivityState>(
+                    builder: (context, state) {
+                      if (state is ActivityInitial) {
+                        return Stack(
+                          children: <Widget>[
+                            Text(
+                              state.initState,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 40,
+                                foreground: Paint()
+                                  ..style = PaintingStyle.stroke
+                                  ..strokeWidth = 6
+                                  ..color = Colors.blue[700]!,
+                              ),
+                            ),
+                            Text(
+                              state.initState,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 40,
+                                color: Colors.grey[300],
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      return Container();
+                    },
                   ),
                   SizedBox(height: 30),
                   Row(

@@ -1,9 +1,17 @@
 part of 'activity_cubit.dart';
 
 @immutable
-abstract class ActivityState {}
+abstract class ActivityState extends Equatable {}
 
-class ActivityInitial extends ActivityState {}
+class ActivityInitial extends ActivityState {
+  final String initState;
+  ActivityInitial({
+    required this.initState,
+  });
+
+  @override
+  List<Object?> get props => [this.initState];
+}
 
 class ActivityLoaded extends ActivityState {
   final Activity activityDescription;
@@ -11,6 +19,9 @@ class ActivityLoaded extends ActivityState {
   ActivityLoaded(
     this.activityDescription,
   );
+
+  @override
+  List<Object?> get props => [this.activityDescription];
 }
 
 class ActivityListLoaded extends ActivityState {
@@ -19,6 +30,9 @@ class ActivityListLoaded extends ActivityState {
   ActivityListLoaded(
     this.activities,
   );
+
+  @override
+  List<Object?> get props => [activities];
 }
 
 class ActivityError extends ActivityState {
@@ -27,4 +41,7 @@ class ActivityError extends ActivityState {
   ActivityError(
     this.errorDescription,
   );
+
+  @override
+  List<Object?> get props => [this.errorDescription];
 }

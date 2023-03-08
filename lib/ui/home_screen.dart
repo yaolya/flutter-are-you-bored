@@ -121,25 +121,31 @@ class _HomeScreenState extends State<_HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(120, 40),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(120, 40),
+                            ),
+                            onPressed: () {
+                              BlocProvider.of<ActivityCubit>(context)
+                                  .saveButtonTapped(state.activityDescription);
+                            },
+                            child: const Text("Save activity"),
                           ),
-                          onPressed: () {
-                            BlocProvider.of<ActivityCubit>(context)
-                                .saveButtonTapped(state.activityDescription);
-                          },
-                          child: const Text("Save activity"),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(120, 40),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(120, 40),
+                            ),
+                            onPressed: () {
+                              BlocProvider.of<ActivityCubit>(context)
+                                  .getNextButtonTapped();
+                            },
+                            child: const Text("Get next"),
                           ),
-                          onPressed: () {
-                            BlocProvider.of<ActivityCubit>(context)
-                                .getNextButtonTapped();
-                          },
-                          child: const Text("Get next"),
                         ),
                       ],
                     ),

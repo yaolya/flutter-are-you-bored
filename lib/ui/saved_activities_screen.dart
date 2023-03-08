@@ -20,7 +20,6 @@ class _SavedActivitiesScreen extends StatefulWidget {
 }
 
 class _SavedActivitiesScreenState extends State<_SavedActivitiesScreen> {
-  // final activities = <Activity>[Activity(1, "Read"), Activity(2, "Sleep")];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

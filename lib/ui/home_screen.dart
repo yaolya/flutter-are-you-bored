@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:first_app/business_logic/cubits/activity_cubit.dart';
 import '../data/data_providers/activity_api.dart';
 import '../data/repositories/activity_repository.dart';
+import '../i18n/localizations.i18n.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -23,12 +24,37 @@ class _HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<_HomeScreen> {
   int currentIndex = 0;
+  var currentActivity = "";
+
+  Widget activityText(String text) {
+    return Stack(
+      children: <Widget>[
+        Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 40,
+            foreground: Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 6
+              ..color = Colors.blue[700]!,
+          ),
+        ),
+        Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 40,
+            color: Colors.grey[300],
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(child: Text('Are You Bored?')),
-      ),
       body: BlocBuilder<ActivityCubit, ActivityState>(
         builder: (context, state) {
           if (state is ActivityInitial) {
@@ -39,29 +65,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                   BlocBuilder<ActivityCubit, ActivityState>(
                     builder: (context, state) {
                       if (state is ActivityInitial) {
-                        return Stack(
-                          children: <Widget>[
-                            Text(
-                              state.initState,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 40,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 6
-                                  ..color = Colors.blue[700]!,
-                              ),
-                            ),
-                            Text(
-                              state.initState,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 40,
-                                color: Colors.grey[300],
-                              ),
-                            ),
-                          ],
-                        );
+                        return activityText(state.initState.i18n);
                       }
                       return Container();
                     },
@@ -78,7 +82,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                           BlocProvider.of<ActivityCubit>(context)
                               .getNextButtonTapped();
                         },
-                        child: const Text("Get an activity"),
+                        child: Text("Get an activity".i18n),
                       ),
                     ],
                   ),
@@ -88,35 +92,14 @@ class _HomeScreenState extends State<_HomeScreen> {
           } else if (state is ActivityError) {
             return Center(child: CircularProgressIndicator());
           } else if (state is ActivityLoaded) {
+            currentActivity = state.activityDescription.act;
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Stack(
-                      children: <Widget>[
-                        Text(
-                          state.activityDescription.act,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 40,
-                            foreground: Paint()
-                              ..style = PaintingStyle.stroke
-                              ..strokeWidth = 6
-                              ..color = Colors.blue[700]!,
-                          ),
-                        ),
-                        Text(
-                          state.activityDescription.act,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 40,
-                            color: Colors.grey[300],
-                          ),
-                        ),
-                      ],
-                    ),
+                    activityText(currentActivity),
                     SizedBox(height: 30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +114,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                               BlocProvider.of<ActivityCubit>(context)
                                   .saveButtonTapped(state.activityDescription);
                             },
-                            child: const Text("Save activity"),
+                            child: Text("Save activity".i18n),
                           ),
                         ),
                         Padding(
@@ -144,7 +127,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                               BlocProvider.of<ActivityCubit>(context)
                                   .getNextButtonTapped();
                             },
-                            child: const Text("Get next"),
+                            child: Text("Get next".i18n),
                           ),
                         ),
                       ],

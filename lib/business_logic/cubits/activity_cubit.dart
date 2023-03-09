@@ -29,6 +29,10 @@ class ActivityCubit extends Cubit<ActivityState> {
     emit(ActivityListLoaded(activities));
   }
 
+  void getCurrentActivity() {
+    emit(CurrentActivity());
+  }
+
   void saveButtonTapped(Activity activity) {
     _repository.addActivity(activity);
   }

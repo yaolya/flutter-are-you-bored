@@ -1,4 +1,5 @@
 import 'package:first_app/data/models/activity.dart';
+import 'package:first_app/i18n/localizations.i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:first_app/business_logic/cubits/activity_cubit.dart';
@@ -23,9 +24,6 @@ class _SavedActivitiesScreenState extends State<_SavedActivitiesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(child: Text('Saved Activities')),
-      ),
       body: BlocBuilder<ActivityCubit, ActivityState>(
         builder: (context, state) {
           if (!(state is ActivityListLoaded)) {
@@ -71,7 +69,19 @@ Widget _activityTile(Activity activity, context) {
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [Text(activity.act)],
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 2),
+            child: Text(
+              activity.act,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+      ],
     ),
   );
 }

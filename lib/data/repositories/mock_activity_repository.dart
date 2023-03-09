@@ -6,11 +6,13 @@ import '../models/activity.dart';
 
 var mockActivity = Activity(435236, "Water flowers");
 List<Activity> activitiesList = [];
+Activity? currentActivity;
 
 class MockActivityRepository implements IActivityRepository {
   @override
-  Future<Activity> getRandomActivity() async =>
-      Future.delayed(const Duration(seconds: 2), () => mockActivity);
+  Future<Activity> getRandomActivity() async {
+    return Future.delayed(const Duration(seconds: 2), () => mockActivity);
+  }
 
   @override
   List<Activity> fetchActivities() {
@@ -25,5 +27,10 @@ class MockActivityRepository implements IActivityRepository {
       }
     }
     activitiesList.add(activity);
+  }
+
+  @override
+  Activity? getCurrentActivity() {
+    return currentActivity;
   }
 }

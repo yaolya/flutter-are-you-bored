@@ -22,13 +22,6 @@ class AreYouBoredApplication extends StatefulWidget {
 }
 
 class _AreYouBoredApplicationState extends State<AreYouBoredApplication> {
-  // Locale _locale = Locale.fromSubtags(languageCode: 'en');
-  // void setLocale(Locale value) {
-  //   setState(() {
-  //     _locale = value;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     ActivityRepository repository = ActivityRepository(api: ActivityAPI());
@@ -46,13 +39,10 @@ class _AreYouBoredApplicationState extends State<AreYouBoredApplication> {
           const Locale('ru', "RU"),
         ],
         debugShowCheckedModeBanner: false,
-        // title: AreYouBoredApplication.title,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        // locale: _locale,
         home: I18n(
-          // initialLocale: Locale("en", "us"),
           child: MainPage(),
         ),
       ),

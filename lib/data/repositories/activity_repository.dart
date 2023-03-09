@@ -8,6 +8,7 @@ import '../models/activity.dart';
 class ActivityRepository implements IActivityRepository {
   final ActivityAPI api;
   final List<Activity> activities = [];
+  Activity? currentActivity;
 
   ActivityRepository({required this.api});
 
@@ -16,12 +17,18 @@ class ActivityRepository implements IActivityRepository {
     final String rawActivity = await api.getRawActivity();
     Map<String, dynamic> activityMap = jsonDecode(rawActivity);
     final Activity activity = Activity.fromJson(activityMap);
+    currentActivity = activity;
     return activity;
   }
 
   @override
   List<Activity> fetchActivities() {
     return activities;
+  }
+
+  @override
+  Activity? getCurrentActivity() {
+    return currentActivity;
   }
 
   @override

@@ -22,35 +22,85 @@ class _HomeScreen extends StatefulWidget {
   State<_HomeScreen> createState() => _HomeScreenState();
 }
 
+Widget activityText(String text) {
+  return Stack(
+    children: <Widget>[
+      Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 40,
+          foreground: Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 6
+            ..color = Colors.blue[700]!,
+        ),
+      ),
+      Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 40,
+          color: Colors.grey[300],
+        ),
+      ),
+    ],
+  );
+}
+
+Widget centralWidget(BuildContext context, ActivityState state, String text) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          activityText(text),
+          SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(120, 40),
+                  ),
+                  onPressed: () {
+                    if (state is CurrentActivity) {
+                      BlocProvider.of<ActivityCubit>(context)
+                          .saveButtonTapped(state.currentActivity!);
+                    } else if (state is ActivityLoaded) {
+                      BlocProvider.of<ActivityCubit>(context)
+                          .saveButtonTapped(state.activityDescription);
+                    }
+                  },
+                  child: Text("Save activity".i18n),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(120, 40),
+                  ),
+                  onPressed: () {
+                    BlocProvider.of<ActivityCubit>(context)
+                        .getNextButtonTapped();
+                  },
+                  child: Text("Get next".i18n),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 class _HomeScreenState extends State<_HomeScreen> {
   int currentIndex = 0;
-  var currentActivity = "";
-
-  Widget activityText(String text) {
-    return Stack(
-      children: <Widget>[
-        Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 40,
-            foreground: Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 6
-              ..color = Colors.blue[700]!,
-          ),
-        ),
-        Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 40,
-            color: Colors.grey[300],
-          ),
-        ),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,50 +142,9 @@ class _HomeScreenState extends State<_HomeScreen> {
           } else if (state is ActivityError) {
             return Center(child: CircularProgressIndicator());
           } else if (state is ActivityLoaded) {
-            currentActivity = state.activityDescription.act;
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    activityText(currentActivity),
-                    SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(120, 40),
-                            ),
-                            onPressed: () {
-                              BlocProvider.of<ActivityCubit>(context)
-                                  .saveButtonTapped(state.activityDescription);
-                            },
-                            child: Text("Save activity".i18n),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(120, 40),
-                            ),
-                            onPressed: () {
-                              BlocProvider.of<ActivityCubit>(context)
-                                  .getNextButtonTapped();
-                            },
-                            child: Text("Get next".i18n),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
+            return centralWidget(context, state, state.activityDescription.act);
+          } else if (state is CurrentActivity) {
+            return centralWidget(context, state, state.currentActivity!.act);
           } else {
             return Center(child: CircularProgressIndicator());
           }

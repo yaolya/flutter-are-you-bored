@@ -10,5 +10,7 @@ abstract class IActivityRepository {
 
   List<Activity> fetchActivities();
 
+  Activity? getCurrentActivity();
+
   void addActivity(Activity activity);
 }

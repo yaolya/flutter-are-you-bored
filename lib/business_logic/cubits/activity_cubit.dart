@@ -30,7 +30,12 @@ class ActivityCubit extends Cubit<ActivityState> {
   }
 
   void getCurrentActivity() {
-    emit(CurrentActivity());
+    final activity = _repository.getCurrentActivity();
+    if (activity != null) {
+      emit(CurrentActivity(activity));
+    } else {
+      emit(ActivityInitial(initState: "Tap a button to get an activity"));
+    }
   }
 
   void saveButtonTapped(Activity activity) {

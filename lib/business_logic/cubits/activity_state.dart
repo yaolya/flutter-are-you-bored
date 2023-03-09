@@ -36,7 +36,11 @@ class ActivityListLoaded extends ActivityState {
 }
 
 class CurrentActivity extends ActivityState {
-  CurrentActivity();
+  final Activity? currentActivity;
+
+  CurrentActivity(
+    this.currentActivity,
+  );
 
   @override
   List<Object?> get props => throw UnimplementedError();

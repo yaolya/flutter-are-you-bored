@@ -1,16 +1,21 @@
+import 'package:are_you_bored/data/repositories/activity_repository.dart';
+
 import '../models/activity.dart';
 
 abstract class IActivityRepository {
-  // final IActivityAPI api;
-  // final List<Activity> activities = [];
-
-  // IActivityRepository({required this.api});
+  late Stream<ActivityRepositoryEvent> eventsStream;
 
   Future<Activity> getRandomActivity();
 
-  List<Activity> fetchActivities();
+  Future<List<Activity>> getActivitiesList();
 
-  Activity? getCurrentActivity();
+  Activity? get currentActivity;
+
+  List<Activity>? get cachedActivities;
+
+  Future<bool> isSaved(Activity activity);
 
   void addActivity(Activity activity);
+
+  void deleteActivity(Activity activity);
 }

@@ -1,50 +1,92 @@
-import 'package:first_app/business_logic/cubits/activity_cubit.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:are_you_bored/business_logic/activities_list/activities_list_cubit.dart';
+import 'package:are_you_bored/data/database/database_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:i18n_extension/i18n_widget.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import './ui/home_screen.dart';
 import './ui/saved_activities_screen.dart';
-import 'data/data_providers/activity_api.dart';
+import 'business_logic/activity/activity_cubit.dart';
+import 'data/network/activity_api.dart';
 import 'data/repositories/activity_repository.dart';
-import './i18n/localizations.i18n.dart';
 
-void main() => runApp(AreYouBoredApplication());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    DevicePreview(
+      backgroundColor: Colors.white,
+      enabled: true,
+      defaultDevice: Devices.ios.iPhone13ProMax,
+      isToolbarVisible: true,
+      availableLocales: [Locale('en', 'US')],
+      tools: const [
+        SystemSection(),
+        AccessibilitySection(),
+        SettingsSection(),
+        DeviceSection(
+          model: true,
+          orientation: false,
+          frameVisibility: false,
+          virtualKeyboard: false,
+        ),
+      ],
+      devices: [
+        Devices.android.samsungGalaxyA50,
+        Devices.android.samsungGalaxyNote20,
+        Devices.android.samsungGalaxyS20,
+        Devices.ios.iPhone12,
+        Devices.ios.iPhone13ProMax,
+        Devices.ios.iPhoneSE,
+      ],
+      builder: (context) => RepositoryProvider<ActivityRepository>(
+        create: (_) => ActivityRepository(
+          api: ActivityAPI(),
+          dbService: DatabaseService.instance,
+        ),
+        child: const AreYouBoredApplication(),
+      ),
+    ),
+  );
+}
 
 class AreYouBoredApplication extends StatefulWidget {
-  AreYouBoredApplication({super.key});
-  static const String title = 'Are You Bored?';
+  const AreYouBoredApplication({super.key});
 
   @override
   State<AreYouBoredApplication> createState() => _AreYouBoredApplicationState();
 }
 
 class _AreYouBoredApplicationState extends State<AreYouBoredApplication> {
+  ActivityRepository get _repository => context.read<ActivityRepository>();
+
   @override
   Widget build(BuildContext context) {
-    ActivityRepository repository = ActivityRepository(api: ActivityAPI());
-    return BlocProvider(
-      create: (BuildContext context) => ActivityCubit(
-          activityRepository: ActivityRepository(api: ActivityAPI())),
-      child: GetMaterialApp(
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      theme: ThemeData(
+        primaryColor: const Color(0xFFFFD86A),
+      ),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (BuildContext context) => ActivityCubit(
+              activityRepository: _repository,
+            ),
+          ),
+          BlocProvider<ActivitiesListCubit>(
+            create: (context) => ActivitiesListCubit(
+              activityRepository: _repository,
+            ),
+          ),
         ],
-        supportedLocales: [
-          const Locale('en', "US"),
-          const Locale('ru', "RU"),
-        ],
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: I18n(
-          child: MainPage(),
-        ),
+        child: const MainPage(),
       ),
     );
   }
@@ -59,9 +101,8 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
-  var appBarTitle = 'Are You Bored?';
 
-  static const List<Widget> _pages = <Widget>[
+  final List<Widget> _pages = <Widget>[
     HomeScreen(),
     SavedActivitiesScreen(),
   ];
@@ -70,53 +111,49 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(appBarTitle),
-        actions: [
-          PopupMenuButton(
-              icon: Icon(IconData(0xe366, fontFamily: 'MaterialIcons')),
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem<int>(
-                    value: 0,
-                    child: Text("English"),
-                  ),
-                  PopupMenuItem<int>(
-                    value: 1,
-                    child: Text("Русский"),
-                  ),
-                ];
-              },
-              onSelected: (value) {
-                if (value == 0) {
-                  Get.updateLocale(Locale("en", "US"));
-                } else if (value == 1) {
-                  Get.updateLocale(Locale("ru", "RU"));
-                }
-              }),
-        ],
+        backgroundColor: Colors.white,
+        title: Text(
+          'Are You Bored?',
+          style: GoogleFonts.pixelifySans(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
       ),
-      body: Center(
-        child: _pages.elementAt(_currentIndex),
-      ),
+      body: _pages.elementAt(_currentIndex),
+      backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.black87,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.white,
+        iconSize: 32,
+        elevation: 80,
+        unselectedLabelStyle: GoogleFonts.pixelifySans(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+        selectedLabelStyle: GoogleFonts.pixelifySans(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
+        ),
         items: [
           BottomNavigationBarItem(
-            label: 'Home'.i18n,
-            icon: const Icon(Icons.home),
+            label: 'Explore Activities',
+            icon: ImageIcon(
+              AssetImage("assets/images/icon_search.png"),
+              size: 24,
+            ),
           ),
           BottomNavigationBarItem(
-            label: 'Saved activities'.i18n,
-            icon: const Icon(Icons.list_alt),
+            label: 'Saved',
+            icon: const Icon(Icons.list_alt_sharp),
           ),
         ],
         currentIndex: _currentIndex,
         onTap: (int index) {
           setState(() {
-            if (index == 1) {
-              BlocProvider.of<ActivityCubit>(context).getActivities();
-            } else {
-              BlocProvider.of<ActivityCubit>(context).getCurrentActivity();
-            }
             _currentIndex = index;
           });
         },

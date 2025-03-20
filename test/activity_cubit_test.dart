@@ -1,45 +1,41 @@
-import 'package:equatable/equatable.dart';
+import 'package:are_you_bored/business_logic/activity/activity_cubit.dart';
 import 'package:test/test.dart';
 import 'package:bloc_test/bloc_test.dart';
 
-import 'package:first_app/data/data_providers/activity_api.dart';
-import 'package:first_app/data/repositories/mock_activity_repository.dart';
-import 'package:first_app/business_logic/cubits/activity_cubit.dart';
+import 'package:are_you_bored/data/repositories/activity_repository_mock.dart';
 
 void main() {
   group('ActivityCubit', () {
     late ActivityCubit activityCubit;
-    MockActivityRepository mockRepository;
+    ActivityRepositoryMock mockRepository;
 
     setUp(() {
-      mockRepository = MockActivityRepository();
+      mockRepository = ActivityRepositoryMock();
       activityCubit = ActivityCubit(activityRepository: mockRepository);
     });
 
     test(
-        ': emits ActivityInitial state for'
-        'ActivityCubit', () {
-      expect(activityCubit.state,
-          ActivityInitial(initState: "Tap a button to get an activity"));
+        ': emits ActivityInitial for '
+        'initial state', () {
+      expect(activityCubit.state, ActivityInitial());
     });
 
     blocTest<ActivityCubit, ActivityState>(
-      ': emits ActivityLoaded state for '
-      'successful activity load',
+      ': emits ActivityInitial state for '
+      'getting current activity',
       build: () => activityCubit,
-      act: (cubit) => cubit.getNextButtonTapped(),
-      expect: () => [
-        ActivityLoaded(mockActivity),
-      ],
+      act: (cubit) => cubit.getCurrentActivity(),
+      expect: () => [ActivityInitial()],
     );
 
     blocTest<ActivityCubit, ActivityState>(
-      ': emits ActivityListLoaded state for '
-      'successful activities load',
+      ': emits ActivityLoadingSuccess state for '
+      'successful activity loading',
       build: () => activityCubit,
-      act: (cubit) => cubit.getActivities(),
+      act: (cubit) => cubit.getNextButtonTapped(),
       expect: () => [
-        ActivityListLoaded(activitiesList),
+        ActivityLoadingInProgress(activity: null),
+        ActivityLoadingSuccess(activity: mockActivity),
       ],
     );
 

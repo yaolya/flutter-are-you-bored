@@ -1,34 +1,28 @@
+import 'package:are_you_bored/data/database/drift_database.dart';
 import 'package:equatable/equatable.dart';
 
-class Activity extends Equatable {
+class ActivityModel extends Equatable {
   final int id;
   final String text;
   final bool isSaved;
-  const Activity({
+  const ActivityModel({
     required this.id,
     required this.text,
     required this.isSaved,
   });
 
-  Activity.fromJson(Map<String, dynamic> json)
+  ActivityModel.fromJson(Map<String, dynamic> json)
       : id = int.parse(json['key']),
         text = json['activity'],
         isSaved = false;
 
-  Activity.fromDatabaseJson(Map<String, dynamic> json)
-      : id = json['key'],
-        text = json['description'],
-        isSaved = false;
+  ActivityModel.fromDatabaseActivity(Activity activity)
+      : id = activity.key,
+        text = activity.content,
+        isSaved = activity.isSaved;
 
-  Map<String, dynamic> toJson() {
-    return {
-      'key': id,
-      'description': text,
-    };
-  }
-
-  Activity copyWith(bool? isSaved) {
-    return Activity(
+  ActivityModel copyWith(bool? isSaved) {
+    return ActivityModel(
       id: id,
       text: text,
       isSaved: isSaved ?? this.isSaved,

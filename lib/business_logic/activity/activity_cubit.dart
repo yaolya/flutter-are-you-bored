@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
 import 'package:are_you_bored/data/repositories/activity_repository.dart';
+import 'package:are_you_bored/data/repositories/i_activity_repository.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/error_details.dart';
-import '../../data/repositories/i_activity_repository.dart';
 import '../../../data/models/activity.dart';
+import '../../data/models/error_details.dart';
 
 part 'activity_state.dart';
 
@@ -39,7 +39,7 @@ class ActivityCubit extends Cubit<ActivityState> {
     try {
       emit(ActivityLoadingInProgress(activity: state.activity));
       final activity = await _repository.getRandomActivity();
-      final isSaved = await _repository.isSaved(activity);
+      final isSaved = await _repository.isSaved(activity.id);
       emit(ActivityLoadingSuccess(activity: activity.copyWith(isSaved)));
     } catch (e) {
       emit(ActivityLoadingFailure(
@@ -58,7 +58,7 @@ class ActivityCubit extends Cubit<ActivityState> {
     }
   }
 
-  void saveButtonTapped(Activity? activity) {
+  void saveButtonTapped(ActivityModel? activity) {
     if (activity == null) return;
     try {
       _repository.addActivity(activity);
@@ -71,7 +71,7 @@ class ActivityCubit extends Cubit<ActivityState> {
     }
   }
 
-  void notifySaveActivityFailureProcessed(Activity? activity) {
+  void notifySaveActivityFailureProcessed(ActivityModel? activity) {
     emit(ActivityLoadingSuccess(activity: activity));
   }
 }

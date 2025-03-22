@@ -1,3 +1,4 @@
+import 'package:are_you_bored/locator.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:are_you_bored/business_logic/activities_list/activities_list_cubit.dart';
 import 'package:are_you_bored/data/database/database_service.dart';
@@ -14,6 +15,7 @@ import 'data/repositories/activity_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     DevicePreview(
       backgroundColor: Colors.white,
@@ -36,7 +38,7 @@ void main() {
         Devices.android.samsungGalaxyA50,
         Devices.android.samsungGalaxyNote20,
         Devices.android.samsungGalaxyS20,
-        Devices.ios.iPhone12,
+        Devices.ios.iPhone13,
         Devices.ios.iPhone13ProMax,
         Devices.ios.iPhoneSE,
       ],
@@ -49,6 +51,7 @@ void main() {
       ),
     ),
   );
+  setUp();
 }
 
 class AreYouBoredApplication extends StatefulWidget {

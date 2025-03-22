@@ -87,7 +87,7 @@ class SavedActivitiesScreenState extends State<SavedActivitiesScreen> {
     );
   }
 
-  Widget _buildContent(List<Activity> activities) {
+  Widget _buildContent(List<ActivityModel> activities) {
     return Container(
       color: Colors.white,
       child: SafeArea(
@@ -98,7 +98,7 @@ class SavedActivitiesScreenState extends State<SavedActivitiesScreen> {
     );
   }
 
-  Widget _buildList(List<Activity> activities) {
+  Widget _buildList(List<ActivityModel> activities) {
     return ListView.builder(
       padding: EdgeInsets.all(8),
       itemCount: activities.length,
@@ -108,7 +108,7 @@ class SavedActivitiesScreenState extends State<SavedActivitiesScreen> {
     );
   }
 
-  Widget _buildActivity(Activity activity, context) {
+  Widget _buildActivity(ActivityModel activity, context) {
     return InkWell(
       child: Dismissible(
         key: UniqueKey(),
@@ -121,7 +121,7 @@ class SavedActivitiesScreenState extends State<SavedActivitiesScreen> {
     );
   }
 
-  Widget _buildActivityTile(Activity activity, context) {
+  Widget _buildActivityTile(ActivityModel activity, context) {
     return Card(
       elevation: 8.0,
       color: Color.fromARGB(59, 255, 215, 106),

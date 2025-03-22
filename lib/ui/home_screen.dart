@@ -124,7 +124,7 @@ class HomeScreenState extends State<HomeScreen> {
 
   Widget _buildContent(
     ActivityState state,
-    Activity? activity,
+    ActivityModel? activity,
   ) {
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -200,7 +200,7 @@ class HomeScreenState extends State<HomeScreen> {
           fontSize: 28,
           fontWeight: FontWeight.bold,
           color: Colors.black87,
-        ), //lilitaOne jacquesFrancois oldenburg archivoBlack indieFlower permanentMarker
+        ),
       ),
     );
   }

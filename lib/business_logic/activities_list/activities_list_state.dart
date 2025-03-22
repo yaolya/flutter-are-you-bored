@@ -1,7 +1,7 @@
 part of 'activities_list_cubit.dart';
 
 abstract class ActivitiesListState extends Equatable {
-  final List<Activity>? activities;
+  final List<ActivityModel>? activities;
   const ActivitiesListState({required this.activities});
 
   @override

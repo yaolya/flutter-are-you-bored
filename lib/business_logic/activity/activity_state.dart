@@ -2,7 +2,7 @@ part of 'activity_cubit.dart';
 
 @immutable
 abstract class ActivityState extends Equatable {
-  final Activity? activity;
+  final ActivityModel? activity;
   const ActivityState({required this.activity});
   @override
   List<Object?> get props => [activity];

@@ -27,7 +27,7 @@ class ActivitiesListCubit extends Cubit<ActivitiesListState> {
     }
   }
 
-  void deleteActivity(Activity activity) async {
+  void deleteActivity(ActivityModel activity) async {
     try {
       emit(ActivitiesListDeleteInProgress(activities: state.activities));
       _repository.deleteActivity(activity);

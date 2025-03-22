@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:are_you_bored/data/models/activity.dart';
 import 'package:are_you_bored/data/repositories/i_activity_repository.dart';
 import 'package:are_you_bored/data/database/database_service.dart';
 
 import '../network/activity_api.dart';
-import '../models/activity.dart';
 
 abstract class ActivityRepositoryEvent {}
 
@@ -15,8 +15,8 @@ class ActivityRepositoryCurrentActivityDeletedEvent
 class ActivityRepository implements IActivityRepository {
   final ActivityAPI api;
   final DatabaseService dbService;
-  Activity? _currentActivity;
-  List<Activity>? _cachedActivities;
+  ActivityModel? _currentActivity;
+  List<ActivityModel>? _cachedActivities;
 
   @override
   late Stream<ActivityRepositoryEvent> eventsStream;
@@ -31,39 +31,42 @@ class ActivityRepository implements IActivityRepository {
   }
 
   @override
-  Future<Activity> getRandomActivity() async {
+  Future<ActivityModel> getRandomActivity() async {
     final String rawActivity = await api.getRawActivity() ?? "";
     Map<String, dynamic> activityMap = jsonDecode(rawActivity);
-    final activity = Activity.fromJson(activityMap);
+    final activity = ActivityModel.fromJson(activityMap);
     _currentActivity = activity;
     return activity;
   }
 
   @override
-  Future<List<Activity>> getActivitiesList() async {
+  Future<List<ActivityModel>> getActivitiesList() async {
     final activities = await dbService.getActivitiesList();
-    _cachedActivities = activities;
-    return activities;
+    final act = activities.map((e) {
+      return ActivityModel.fromDatabaseActivity(e);
+    }).toList();
+    _cachedActivities = act;
+    return act;
   }
 
   @override
-  Activity? get currentActivity => _currentActivity;
+  ActivityModel? get currentActivity => _currentActivity;
 
   @override
-  List<Activity>? get cachedActivities => _cachedActivities;
+  List<ActivityModel>? get cachedActivities => _cachedActivities;
 
   @override
-  void addActivity(Activity activity) async {
+  void addActivity(ActivityModel activity) async {
     dbService.addActivity(activity);
   }
 
   @override
-  Future<bool> isSaved(Activity activity) async {
-    return dbService.isSaved(activity);
+  Future<bool> isSaved(int id) async {
+    return dbService.isSaved(id);
   }
 
   @override
-  void deleteActivity(Activity activity) async {
+  void deleteActivity(ActivityModel activity) async {
     dbService.deleteActivity(activity.id);
     if (activity == currentActivity) {
       _eventsStreamController

@@ -5,7 +5,7 @@ import 'package:are_you_bored/data/repositories/activity_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/error_details.dart';
+import '../../data/models/message_exception.dart';
 import '../../data/repositories/i_activity_repository.dart';
 import '../../../data/models/activity.dart';
 

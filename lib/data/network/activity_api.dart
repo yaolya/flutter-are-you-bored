@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 
-import '../models/error_details.dart';
+import '../models/message_exception.dart';
 
 class ActivityAPI {
   Future<String?> getRawActivity() async {

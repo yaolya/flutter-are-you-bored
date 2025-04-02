@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/error_details.dart';
+import '../../data/models/message_exception.dart';
 import '../../data/repositories/i_activity_repository.dart';
 import '../../../data/models/activity.dart';
 

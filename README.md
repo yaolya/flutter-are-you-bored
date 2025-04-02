@@ -1,12 +1,66 @@
-# flutter-are-you-bored
+<h1 align="center">AreYouBored</h1>
 
-Choose a language <br />
+<div align="center">
+  <img src="pics/pixel_logo.png" width=100> 
+</div>
 
-<img src="https://user-images.githubusercontent.com/61321903/224138066-c41aca38-6f48-4c04-9266-4cdf0b70c6cf.png" width="207" height="448">. <img src="https://user-images.githubusercontent.com/61321903/224139175-0c14d8c4-ee1f-4dc2-9e16-0e40f945c0e7.png" width="207" height="448">
+<h4 align="center">
+Flutter app that uses BLoC pattern to help you discover activities when you're bored.
+</h4>
 
-<br />
-<br />
+[![Run tests](https://github.com/yaolya/flutter-are-you-bored/actions/workflows/test.yml/badge.svg)](https://github.com/yaolya/flutter-are-you-bored/actions/workflows/test.yml)
 
-Find something to do <br />
+---
 
-<img src="https://user-images.githubusercontent.com/61321903/224139412-308abc72-cb82-4909-9990-4c5bfb6f9267.png" width="207" height="448">  <img src="https://user-images.githubusercontent.com/61321903/224139427-a72c34e7-8ef1-4c4d-9338-1dd6eb61c02f.png" width="207" height="448">  <img src="https://user-images.githubusercontent.com/61321903/224139447-4896f821-a2e7-49db-8e7d-843ea706bfb4.png" width="207" height="448">  <img src="https://user-images.githubusercontent.com/61321903/224140460-39ad92b6-5b84-4040-b539-93d5a9dca0b4.png" width="207" height="448">
+![app screens preview](pics/app_screens.png)
+
+---
+
+## Features
+- Discover activities.
+- Save activities for the future.
+- Remove activities from the list.
+
+## Run the project
+1. Ensure [Flutter](https://flutter.io/setup/) is installed
+   ```bash
+   flutter --version
+   ```
+2. Clone this repository
+    ```bash
+   git clone https://github.com/yaolya/flutter-are-you-bored.git
+   ```
+3. Navigate to the project directory
+    ```bash
+   cd flutter-are-you-bored
+   ```
+4. Run app
+   ```bash
+   flutter run
+   ```
+
+---
+## → [web app demo](https://yaolya.github.io/flutter-are-you-bored) ←  
+
+[![Demo Screenshot](pics/web.png)](https://yaolya.github.io/flutter-are-you-bored)
+
+## Project Structure
+
+```
+.
+├── lib/
+│   ├── business_logic/
+│   │   ├── activities_list/  # activities list cubit and state
+│   │   └── activity/  # activity cubit and state
+│   ├── data/
+│   │   ├── database/  # sqflite database
+│   │   ├── entities/  # models 
+│   │   ├── network/  # api requests
+│   │   └── repositories/  # repository implementations, including mock repository for unit tests
+│   ├── main.dart 
+│   └── ui/  # app screens
+├── README.md 
+├── pubspec.yaml
+└── test/  # unit tests
+```
+

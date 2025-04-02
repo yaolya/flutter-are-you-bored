@@ -47,7 +47,6 @@ dependencies:
   transparent_image: ^2.0.1
   google_fonts: ^6.2.1
   lottie: ^3.3.1
-  device_preview: ^1.2.0
 
 dev_dependencies:
   # flutter_test:

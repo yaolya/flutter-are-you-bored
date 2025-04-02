@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:are_you_bored/business_logic/activities_list/activities_list_cubit.dart';
 import 'package:are_you_bored/data/database/database_service.dart';
 import 'package:flutter/material.dart';
@@ -15,38 +14,12 @@ import 'data/repositories/activity_repository.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
-    DevicePreview(
-      backgroundColor: Colors.white,
-      enabled: true,
-      defaultDevice: Devices.ios.iPhone13ProMax,
-      isToolbarVisible: true,
-      availableLocales: [Locale('en', 'US')],
-      tools: const [
-        SystemSection(),
-        AccessibilitySection(),
-        SettingsSection(),
-        DeviceSection(
-          model: true,
-          orientation: false,
-          frameVisibility: false,
-          virtualKeyboard: false,
-        ),
-      ],
-      devices: [
-        Devices.android.samsungGalaxyA50,
-        Devices.android.samsungGalaxyNote20,
-        Devices.android.samsungGalaxyS20,
-        Devices.ios.iPhone12,
-        Devices.ios.iPhone13ProMax,
-        Devices.ios.iPhoneSE,
-      ],
-      builder: (context) => RepositoryProvider<ActivityRepository>(
-        create: (_) => ActivityRepository(
-          api: ActivityAPI(),
-          dbService: DatabaseService.instance,
-        ),
-        child: const AreYouBoredApplication(),
+    RepositoryProvider<ActivityRepository>(
+      create: (_) => ActivityRepository(
+        api: ActivityAPI(),
+        dbService: DatabaseService.instance,
       ),
+      child: const AreYouBoredApplication(),
     ),
   );
 }
@@ -68,8 +41,6 @@ class _AreYouBoredApplicationState extends State<AreYouBoredApplication> {
     ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
       theme: ThemeData(
         primaryColor: const Color(0xFFFFD86A),
       ),

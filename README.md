@@ -14,7 +14,6 @@ Flutter app that uses BLoC pattern to help you discover activities when you're b
 
 ![app screens preview](pics/app_screens.png)
 
----
 
 ## Features
 - Discover activities.
@@ -39,7 +38,6 @@ Flutter app that uses BLoC pattern to help you discover activities when you're b
    flutter run
    ```
 
----
 ## → [web app demo](https://yaolya.github.io/flutter-are-you-bored) ←  
 
 [![Demo Screenshot](pics/web.png)](https://yaolya.github.io/flutter-are-you-bored)
@@ -48,19 +46,19 @@ Flutter app that uses BLoC pattern to help you discover activities when you're b
 
 ```
 .
-├── lib/
-│   ├── business_logic/
+├── lib
+│   ├── business_logic
 │   │   ├── activities_list/  # activities list cubit and state
 │   │   └── activity/  # activity cubit and state
-│   ├── data/
+│   ├── data
 │   │   ├── database/  # sqflite database
-│   │   ├── entities/  # models 
+│   │   ├── models/  # models 
 │   │   ├── network/  # api requests
 │   │   └── repositories/  # repository implementations, including mock repository for unit tests
 │   ├── main.dart 
 │   └── ui/  # app screens
+├── test/  # unit tests
 ├── README.md 
-├── pubspec.yaml
-└── test/  # unit tests
+└── pubspec.yaml
 ```
 
